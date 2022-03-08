@@ -14,23 +14,23 @@ public class DepartmentController {
     @Autowired
     private DepartmentService departmentService;
 
-    @PostMapping("/registerDepartment")
-    public DepartmentResponseModel registerDepartment(@RequestBody DepartmentRequestModel department){
+    @PostMapping
+    public DepartmentResponseModel registerDepartment(@RequestBody DepartmentRequestModel department) {
         return departmentService.registerDepartment(department);
     }
+
     @GetMapping
-    public List<DepartmentResponseModel> getDepartments(){
+    public List<DepartmentResponseModel> getDepartments() {
         return departmentService.getDepartments();
     }
 
-    @PutMapping("/updateDepartment")
-    public DepartmentResponseModel updateDepartment(@RequestBody DepartmentRequestModel department)
-    {
+    @PutMapping("/{department-id}")
+    public DepartmentResponseModel updateDepartment(@PathVariable(value = "department-id") DepartmentRequestModel department) {
         return departmentService.updateDepartment(department);
     }
 
-    @DeleteMapping("/deleteDepartment")
-    public void deleteDepartment(@RequestParam String id){
+    @DeleteMapping("/{department-id}")
+    public void deleteDepartment(@PathVariable(value = "department-id") String id) {
         System.out.println("--------====++++++++-----");
         System.out.println(id);
         departmentService.deleteDepartment(id);
