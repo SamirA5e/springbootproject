@@ -11,8 +11,8 @@ import javax.persistence.*;
 @Table(name="employees")
 public class Employee {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private  Integer id;
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private  String id;
     @Column(name="first_name")
     private String firstname;
     @Column(name="last_name")
@@ -20,11 +20,11 @@ public class Employee {
     @Column(name="email_id")
     private String emailId;
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 

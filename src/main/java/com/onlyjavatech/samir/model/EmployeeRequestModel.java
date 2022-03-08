@@ -1,16 +1,16 @@
 package com.onlyjavatech.samir.model;
 
 public class EmployeeRequestModel {
-    private Integer id;
+    private String id;
     private String firstname;
     private String lastname;
     private String emailId;
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 

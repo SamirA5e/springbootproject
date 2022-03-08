@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class EmployeeService {
@@ -21,6 +22,12 @@ public class EmployeeService {
         employee.setLastname(request.getLastname());
         employee.setEmailId(request.getEmailId());
 
+        UUID uuid = UUID.randomUUID();
+        String uuidAsString = uuid.toString();
+
+        System.out.println("Your UUID is: " + uuidAsString);
+        employee.setId(uuidAsString);
+
         Employee newEmployee = employeeRepository.save(employee);
         EmployeeResponseModel response = new EmployeeResponseModel();
         response.setId(newEmployee.getId());
@@ -31,7 +38,7 @@ public class EmployeeService {
     }
 
     public EmployeeResponseModel updateEmployee(EmployeeRequestModel request) {
-        Integer id = request.getId();
+        String id = request.getId();
         Employee emp = employeeRepository.findById(id).get();
         emp.setFirstname(request.getFirstname());
         emp.setLastname(request.getLastname());
@@ -70,7 +77,7 @@ public class EmployeeService {
 
 
 
-    public void deleteEmployee(Integer id) {
+    public void deleteEmployee(String id) {
 
         employeeRepository.deleteById(id);
     }
