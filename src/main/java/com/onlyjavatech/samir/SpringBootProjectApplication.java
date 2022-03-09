@@ -1,21 +1,15 @@
 package com.onlyjavatech.samir;
 
-import com.onlyjavatech.samir.model.Employee;
 import com.onlyjavatech.samir.repository.EmployeeRepository;
-import com.sun.glass.ui.Application;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 @SpringBootApplication
-public class SpringbootprojectApplication {
+public class SpringBootProjectApplication {
 
 	public static void main(String[] args) {
-		ApplicationContext context = SpringApplication.run(SpringbootprojectApplication.class, args);
+		ApplicationContext context = SpringApplication.run(SpringBootProjectApplication.class, args);
 		EmployeeRepository employeeRepository=context.getBean(EmployeeRepository.class);
 //-----------------  This is my create ----------------
 
