@@ -24,8 +24,13 @@ public class DepartmentController {
         return departmentService.getDepartments();
     }
 
-    @PutMapping("/{department-id}")
-    public DepartmentResponseModel updateDepartment(@PathVariable(value = "department-id") DepartmentRequestModel department) {
+    @GetMapping("/{department-id}")
+    public DepartmentResponseModel getDepartmentById(@PathVariable(value = "department-id") String id){
+        return departmentService.getDepartmentById(id);
+    }
+
+    @PutMapping()
+    public DepartmentResponseModel updateDepartment(@RequestBody DepartmentRequestModel department) {
         return departmentService.updateDepartment(department);
     }
 

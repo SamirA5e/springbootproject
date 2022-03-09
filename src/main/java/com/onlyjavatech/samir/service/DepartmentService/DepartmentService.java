@@ -43,6 +43,12 @@ public class DepartmentService {
         return responseList;
     }
 
+    public DepartmentResponseModel getDepartmentById(String id){
+        Department department =departmentRepository.findById(id).get();
+
+        return setDepartResponseModel(department);
+    }
+
     public DepartmentResponseModel updateDepartment(DepartmentRequestModel request) {
         String id = request.getId();
         System.out.println(id);

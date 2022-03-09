@@ -1,5 +1,7 @@
 package com.onlyjavatech.samir.service;
 
+import com.onlyjavatech.samir.model.DepartmentModel.DepartmentRequestModel;
+import com.onlyjavatech.samir.model.DepartmentModel.DepartmentResponseModel;
 import com.onlyjavatech.samir.model.Employee;
 import com.onlyjavatech.samir.model.EmployeeRequestModel;
 import com.onlyjavatech.samir.model.EmployeeResponseModel;
@@ -29,12 +31,12 @@ public class EmployeeService {
         employee.setId(uuidAsString);
 
         Employee newEmployee = employeeRepository.save(employee);
-        EmployeeResponseModel response = new EmployeeResponseModel();
-        response.setId(newEmployee.getId());
-        response.setFirstname(newEmployee.getFirstname());
-        response.setLastname(newEmployee.getLastname());
-        response.setEmailId(newEmployee.getEmailId());
-        return response;
+//        EmployeeResponseModel response = new EmployeeResponseModel();
+//        response.setId(newEmployee.getId());
+//        response.setFirstname(newEmployee.getFirstname());
+//        response.setLastname(newEmployee.getLastname());
+//        response.setEmailId(newEmployee.getEmailId());
+        return setEmployeeResponseModel(newEmployee);
     }
 
     public EmployeeResponseModel updateEmployee(EmployeeRequestModel request) {
@@ -44,37 +46,34 @@ public class EmployeeService {
         emp.setLastname(request.getLastname());
         emp.setEmailId(request.getEmailId());
 
-         Employee emp1 = employeeRepository.save(emp);
-         EmployeeResponseModel response = new EmployeeResponseModel();
-         response.setId(emp1.getId());
-         response.setFirstname(emp1.getFirstname());
-         response.setLastname(emp1.getLastname());
-         response.setEmailId(emp1.getEmailId());
+        Employee updatedEmployee = employeeRepository.save(emp);
 
-         return response;
+        return setEmployeeResponseModel(updatedEmployee);
 
     }
 
-//    public List<Employee> getEmployee() {
+    //    public List<Employee> getEmployee() {
 //        return (List<Employee>) employeeRepository.findAll();
 //    }
-    public List<EmployeeResponseModel> getEmployee(){
+    public List<EmployeeResponseModel> getEmployee() {
         Iterable<Employee> employees = employeeRepository.findAll();
         List<EmployeeResponseModel> employeeList = new ArrayList<>();
 
-        for(Employee e:employees){
-            EmployeeResponseModel employee =new EmployeeResponseModel();
-            employee.setId(e.getId());
-            employee.setFirstname(e.getFirstname());
-            employee.setLastname(e.getLastname());
-            employee.setEmailId(e.getEmailId());
-            employeeList.add(employee);
+        for (Employee employee : employees) {
+//            EmployeeResponseModel employee =new EmployeeResponseModel();
+            EmployeeResponseModel employee_row = setEmployeeResponseModel(employee);
+
+            employeeList.add(employee_row);
         }
 
-        return  employeeList;
+        return employeeList;
     }
 
+    public EmployeeResponseModel getEmployeeById(String id){
+        Employee employee =employeeRepository.findById(id).get();
 
+        return setEmployeeResponseModel(employee);
+    }
 
 
     public void deleteEmployee(String id) {
@@ -89,4 +88,14 @@ public class EmployeeService {
 //        employeeRepository.deleteById(id);
 //        return  employeeResponseModel;
 //    }
+
+    private EmployeeResponseModel setEmployeeResponseModel(Employee employee) {
+        EmployeeResponseModel response = new EmployeeResponseModel();
+        response.setId(employee.getId());
+        response.setFirstname(employee.getFirstname());
+        response.setLastname(employee.getLastname());
+        response.setEmailId(employee.getEmailId());
+
+        return response;
+    }
 }

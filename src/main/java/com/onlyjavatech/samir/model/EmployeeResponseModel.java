@@ -1,9 +1,9 @@
 package com.onlyjavatech.samir.model;
 
 public class EmployeeResponseModel {
-    private  String id;
+    private String id;
     private String firstname;
-    private  String lastname;
+    private String lastname;
     private String emailId;
 
     public String getId() {

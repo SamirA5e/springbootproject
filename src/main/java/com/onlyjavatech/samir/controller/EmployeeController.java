@@ -10,12 +10,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/employees")
 public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
-    @PostMapping("/registerEmployee")
-    public EmployeeResponseModel registerEmployee(@RequestBody EmployeeRequestModel employee){
+    @PostMapping
+    public EmployeeResponseModel registerEmployee(@RequestBody EmployeeRequestModel employee) {
         return employeeService.registerEmployee(employee);
     }
 
@@ -24,21 +25,27 @@ public class EmployeeController {
 //        return  employeeService.getEmployee();
 //    }
 
-//    @PutMapping("/updateEmployee")
+    //    @PutMapping("/updateEmployee")
 //    public Employee updateEmployee(@RequestBody Employee employee){
 //        return employeeService.updateEmployee(employee);
 //    }
-    @GetMapping("/getEmployee")
-    public List<EmployeeResponseModel> getEmployee(){
+    @GetMapping
+    public List<EmployeeResponseModel> getEmployees() {
         return employeeService.getEmployee();
     }
-    @PutMapping("/updateEmployee")
-    public EmployeeResponseModel updateEmployee(@RequestBody EmployeeRequestModel employee){
-    return employeeService.updateEmployee(employee);
-}
+    @GetMapping("/{employee-id}")
+    public EmployeeResponseModel getEmployeeById(@PathVariable(value = "employee-id") String id)
+    {
+        return  employeeService.getEmployeeById(id);
+    }
 
-    @DeleteMapping("/deleteEmployee")
-    public void deleteEmployee(@RequestParam String id){
+    @PutMapping()
+    public EmployeeResponseModel updateEmployee(@RequestBody EmployeeRequestModel employee) {
+        return employeeService.updateEmployee(employee);
+    }
+
+    @DeleteMapping("/{employee-id}")
+    public void deleteEmployee(@PathVariable(value = "employee-id") String id) {
         employeeService.deleteEmployee(id);
     }
 
