@@ -35,11 +35,15 @@ public class DepartmentService {
         Iterable<Department> departments = departmentRepository.findAll();
         List<DepartmentResponseModel> responseList = new ArrayList<>();
 
-        for (Department department : departments) {
-            DepartmentResponseModel department_row = setDepartResponseModel(department);
-
-            responseList.add(department_row);
-        }
+//        for (Department department : departments) {
+//            DepartmentResponseModel department_row = setDepartResponseModel(department);
+//
+//            responseList.add(department_row);
+//        }
+        departments.forEach(department->{
+            DepartmentResponseModel rowDepartment = setDepartResponseModel(department);
+            responseList.add(rowDepartment);
+        });
         return responseList;
     }
 

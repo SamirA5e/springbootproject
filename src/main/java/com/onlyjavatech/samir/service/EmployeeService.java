@@ -1,4 +1,5 @@
 package com.onlyjavatech.samir.service;
+
 import com.onlyjavatech.samir.model.Employee;
 import com.onlyjavatech.samir.model.EmployeeRequestModel;
 import com.onlyjavatech.samir.model.EmployeeResponseModel;
@@ -42,9 +43,7 @@ public class EmployeeService {
         emp.setFirstname(request.getFirstname());
         emp.setLastname(request.getLastname());
         emp.setEmailId(request.getEmailId());
-
         Employee updatedEmployee = employeeRepository.save(emp);
-
         return setEmployeeResponseModel(updatedEmployee);
 
     }
@@ -56,13 +55,16 @@ public class EmployeeService {
         Iterable<Employee> employees = employeeRepository.findAll();
         List<EmployeeResponseModel> employeeList = new ArrayList<>();
 
-        for (Employee employee : employees) {
-//            EmployeeResponseModel employee =new EmployeeResponseModel();
+//        for (Employee employee : employees) {
+////            EmployeeResponseModel employee =new EmployeeResponseModel();
+//            EmployeeResponseModel employee_row = setEmployeeResponseModel(employee);
+//
+//            employeeList.add(employee_row);
+//        }
+        employees.forEach(employee -> {
             EmployeeResponseModel employee_row = setEmployeeResponseModel(employee);
-
             employeeList.add(employee_row);
-        }
-
+        });
         return employeeList;
     }
 
@@ -71,7 +73,6 @@ public class EmployeeService {
 
         return setEmployeeResponseModel(employee);
     }
-
 
     public void deleteEmployee(String id) {
 
