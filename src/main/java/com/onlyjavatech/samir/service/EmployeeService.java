@@ -1,7 +1,4 @@
 package com.onlyjavatech.samir.service;
-
-import com.onlyjavatech.samir.model.DepartmentModel.DepartmentRequestModel;
-import com.onlyjavatech.samir.model.DepartmentModel.DepartmentResponseModel;
 import com.onlyjavatech.samir.model.Employee;
 import com.onlyjavatech.samir.model.EmployeeRequestModel;
 import com.onlyjavatech.samir.model.EmployeeResponseModel;
@@ -69,8 +66,8 @@ public class EmployeeService {
         return employeeList;
     }
 
-    public EmployeeResponseModel getEmployeeById(String id){
-        Employee employee =employeeRepository.findById(id).get();
+    public EmployeeResponseModel getEmployeeById(String id) {
+        Employee employee = employeeRepository.findById(id).get();
 
         return setEmployeeResponseModel(employee);
     }
