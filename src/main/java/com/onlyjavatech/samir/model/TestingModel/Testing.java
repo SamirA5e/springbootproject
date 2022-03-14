@@ -1,10 +1,10 @@
 package com.onlyjavatech.samir.model.TestingModel;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.onlyjavatech.samir.model.DepartmentModel.Department;
 
+import javax.persistence.*;
+
+@Embeddable
 @Entity
 @Table(name = "Testing")
 public class Testing {
@@ -18,6 +18,22 @@ public class Testing {
     private String lastName;
     @Column(name = "emailId")
     private String emailId;
+
+//    @JoinColumn(name = "departments_id")
+//    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "department_id")
+    private Department department;
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+
+
 
     public String getId() {
         return id;

@@ -1,7 +1,8 @@
 package com.onlyjavatech.samir.model.DepartmentModel;
 
-import javax.persistence.*;
+import com.onlyjavatech.samir.model.TestingModel.Testing;
 
+import javax.persistence.*;
 @Entity
 @Table(name="departments")
 public class Department {
@@ -10,6 +11,12 @@ public class Department {
     private String id;
     @Column(name="department_name")
     private String department_name;
+
+//    @OneToOne(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true, fetch=FetchType.LAZY)
+//    private Testing testing;
+
+//    @OneToOne(mappedBy = "department")
+//    private Testing testing;
 
     public String getId() {
         return id;
