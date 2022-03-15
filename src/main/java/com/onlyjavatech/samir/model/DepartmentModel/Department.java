@@ -1,22 +1,23 @@
 package com.onlyjavatech.samir.model.DepartmentModel;
 
-import com.onlyjavatech.samir.model.TestingModel.Testing;
+import com.onlyjavatech.samir.model.Employee;
 
 import javax.persistence.*;
+import java.util.List;
+
 @Entity
-@Table(name="departments")
+@Table(name = "departments")
 public class Department {
     @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
-    @Column(name="department_name")
+    @Column(name = "department_name")
     private String department_name;
 
-//    @OneToOne(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true, fetch=FetchType.LAZY)
-//    private Testing testing;
+    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL)
+    private List<Employee> employees;
 
-//    @OneToOne(mappedBy = "department")
-//    private Testing testing;
+    public Department() {
+    }
 
     public String getId() {
         return id;
@@ -33,4 +34,13 @@ public class Department {
     public void setDepartment_name(String department_name) {
         this.department_name = department_name;
     }
+
+    public List<Employee> getEmployee() {
+        return employees;
+    }
+
+    public void setEmployee(List<Employee> employee) {
+        this.employees = employee;
+    }
+
 }

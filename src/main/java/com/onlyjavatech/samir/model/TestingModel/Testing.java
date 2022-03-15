@@ -21,7 +21,7 @@ public class Testing {
 
 //    @JoinColumn(name = "departments_id")
 //    @OneToOne(fetch = FetchType.LAZY)
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "department_id")
     private Department department;
 

@@ -5,6 +5,7 @@ public class EmployeeRequestModel {
     private String firstname;
     private String lastname;
     private String emailId;
+    private String departmentId;
 
     public String getId() {
         return id;
@@ -36,5 +37,13 @@ public class EmployeeRequestModel {
 
     public void setEmailId(String emailId) {
         this.emailId = emailId;
+    }
+
+    public String getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(String departmentId) {
+        this.departmentId = departmentId;
     }
 }

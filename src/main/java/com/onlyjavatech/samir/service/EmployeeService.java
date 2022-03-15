@@ -1,9 +1,12 @@
 package com.onlyjavatech.samir.service;
 
+import com.onlyjavatech.samir.model.DepartmentModel.Department;
+import com.onlyjavatech.samir.model.DepartmentModel.DepartmentResponseModel;
 import com.onlyjavatech.samir.model.Employee;
 import com.onlyjavatech.samir.model.EmployeeRequestModel;
 import com.onlyjavatech.samir.model.EmployeeResponseModel;
 import com.onlyjavatech.samir.repository.EmployeeRepository;
+import com.onlyjavatech.samir.service.DepartmentService.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +18,9 @@ import java.util.UUID;
 public class EmployeeService {
     @Autowired
     private EmployeeRepository employeeRepository;
+
+    @Autowired
+    private DepartmentService departmentService;
 
     public EmployeeResponseModel registerEmployee(EmployeeRequestModel request) {
         Employee employee = new Employee();
@@ -28,12 +34,9 @@ public class EmployeeService {
         System.out.println("Your UUID is: " + uuidAsString);
         employee.setId(uuidAsString);
 
+        Department department = departmentService.getDepartmentByDepartmentId(request.getDepartmentId());
+        employee.setDepartment(department);
         Employee newEmployee = employeeRepository.save(employee);
-//        EmployeeResponseModel response = new EmployeeResponseModel();
-//        response.setId(newEmployee.getId());
-//        response.setFirstname(newEmployee.getFirstname());
-//        response.setLastname(newEmployee.getLastname());
-//        response.setEmailId(newEmployee.getEmailId());
         return setEmployeeResponseModel(newEmployee);
     }
 
@@ -63,6 +66,10 @@ public class EmployeeService {
 //        }
         employees.forEach(employee -> {
             EmployeeResponseModel employee_row = setEmployeeResponseModel(employee);
+            DepartmentResponseModel departmentResponse = new DepartmentResponseModel();
+            departmentResponse.setId(employee.getDepartment().getId());
+            departmentResponse.setDepartment_name((employee.getDepartment().getDepartment_name()));
+            employee_row.setDepartment(departmentResponse);
             employeeList.add(employee_row);
         });
         return employeeList;
