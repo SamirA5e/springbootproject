@@ -1,5 +1,7 @@
 package com.onlyjavatech.samir;
 
+import com.onlyjavatech.samir.model.DepartmentModel.DepartmentResponseModel;
+import com.onlyjavatech.samir.repository.DepartmentRepository.DepartmentRepository;
 import com.onlyjavatech.samir.repository.EmployeeRepository;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,6 +13,7 @@ public class SpringBootProjectApplication {
 	public static void main(String[] args) {
 		ApplicationContext context = SpringApplication.run(SpringBootProjectApplication.class, args);
 		EmployeeRepository employeeRepository=context.getBean(EmployeeRepository.class);
+		DepartmentRepository departmentRepository=context.getBean(DepartmentRepository.class);
 //-----------------  This is my create ----------------
 
 //		Employee emp1 = new Employee();

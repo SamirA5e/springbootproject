@@ -1,8 +1,10 @@
 package com.onlyjavatech.samir.model;
 
 import com.onlyjavatech.samir.model.DepartmentModel.Department;
+import com.onlyjavatech.samir.model.ProjectModel.Project;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "employees")
@@ -19,6 +21,9 @@ public class Employee {
     @ManyToOne
     @JoinColumn(name = "department_id", referencedColumnName = "id")
     private Department department;
+
+    @ManyToMany
+    private List<Project> projects;
 
     public String getId() {
         return id;
