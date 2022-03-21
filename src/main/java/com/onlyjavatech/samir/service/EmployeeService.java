@@ -5,14 +5,19 @@ import com.onlyjavatech.samir.model.DepartmentModel.DepartmentResponseModel;
 import com.onlyjavatech.samir.model.Employee;
 import com.onlyjavatech.samir.model.EmployeeRequestModel;
 import com.onlyjavatech.samir.model.EmployeeResponseModel;
+import com.onlyjavatech.samir.model.ProjectModel.Project;
 import com.onlyjavatech.samir.repository.EmployeeRepository;
+import com.onlyjavatech.samir.repository.ProjectRepository.ProjectRepository;
 import com.onlyjavatech.samir.service.DepartmentService.DepartmentService;
+import com.onlyjavatech.samir.service.ProjectService.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.ManyToMany;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeService {
@@ -22,12 +27,40 @@ public class EmployeeService {
     @Autowired
     private DepartmentService departmentService;
 
+    @Autowired
+    private ProjectService projectService;
+
+    @Autowired
+    private ProjectRepository projectRepository;
+
     public EmployeeResponseModel registerEmployee(EmployeeRequestModel request) {
         Employee employee = new Employee();
         employee.setFirstname(request.getFirstname());
         employee.setLastname(request.getLastname());
         employee.setEmailId(request.getEmailId());
 
+//        ===========================ManyToMany===============================
+//          employee.getProjects()
+//                .addAll(request
+//                        .getProjects().
+//                        stream().
+//                        map(project -> {
+//                        Project newProject = projectRepository.findById(project.getId()).get();
+//                        newProject.getProjectName().add(employee);
+//                        return newProject;
+//                        }
+//                    ).collect(Collectors.toList())
+//                );
+
+//        employee.setProjects(request.getProjects()
+//                .stream()
+//                .map(projectRow -> {
+//                    Project newProject =projectService.getProjectByProjectName(projectRow.getProjectName());
+//                    employeeRepository.save(newProject);
+//                }));
+
+
+//        ============================ End Of ManyToMany =====================
         UUID uuid = UUID.randomUUID();
         String uuidAsString = uuid.toString();
 

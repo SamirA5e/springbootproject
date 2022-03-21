@@ -25,6 +25,13 @@ public class Employee {
     @ManyToMany
     private List<Project> projects;
 
+    public void addProjects(Project project){
+        projects.add(project);
+        project.getEmployees().add(this);
+
+
+    }
+
     public String getId() {
         return id;
     }
@@ -65,4 +72,11 @@ public class Employee {
         this.department = department;
     }
 
+    public List<Project> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(List<Project> projects) {
+        this.projects = projects;
+    }
 }

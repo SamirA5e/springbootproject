@@ -6,6 +6,7 @@ import com.onlyjavatech.samir.model.ProjectModel.ProjectResponseModel;
 import com.onlyjavatech.samir.repository.ProjectRepository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,24 @@ public class ProjectService {
         });
         return projectList;
     }
+//    public Project getProjectByProjectName(String name){
+//
+//        return null;
+//    }
+    public String consumeApi(){
+
+        return null;
+    }
+
+
+    public String testingException(){
+        System.out.println("Testing Exception.....");
+        String str = null;
+        System.out.println(str.length());
+        return "home";
+    }
+
+
 
     private ProjectResponseModel setProjectResponseModel(Project request)
     {

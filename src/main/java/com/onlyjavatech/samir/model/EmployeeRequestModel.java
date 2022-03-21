@@ -1,11 +1,16 @@
 package com.onlyjavatech.samir.model;
 
+import com.onlyjavatech.samir.model.ProjectModel.Project;
+
+import java.util.List;
+
 public class EmployeeRequestModel {
     private String id;
     private String firstname;
     private String lastname;
     private String emailId;
     private String departmentId;
+    private List<Project> projects;
 
     public String getId() {
         return id;
@@ -45,5 +50,13 @@ public class EmployeeRequestModel {
 
     public void setDepartmentId(String departmentId) {
         this.departmentId = departmentId;
+    }
+
+    public List<Project> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(List<Project> projects) {
+        this.projects = projects;
     }
 }
