@@ -1,7 +1,8 @@
 package com.onlyjavatech.samir.model;
 
-import com.onlyjavatech.samir.model.ProjectModel.Project;
+import com.onlyjavatech.samir.model.ProjectModel.ProjectRequestModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class EmployeeRequestModel {
@@ -10,7 +11,7 @@ public class EmployeeRequestModel {
     private String lastname;
     private String emailId;
     private String departmentId;
-    private List<Project> projects;
+    private List<ProjectRequestModel> projects = new ArrayList<>();
 
     public String getId() {
         return id;
@@ -52,11 +53,11 @@ public class EmployeeRequestModel {
         this.departmentId = departmentId;
     }
 
-    public List<Project> getProjects() {
+    public List<ProjectRequestModel> getProjects() {
         return projects;
     }
 
-    public void setProjects(List<Project> projects) {
+    public void setProjects(List<ProjectRequestModel> projects) {
         this.projects = projects;
     }
 }

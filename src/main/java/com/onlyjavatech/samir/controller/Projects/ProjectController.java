@@ -23,6 +23,11 @@ public class ProjectController {
         return projectService.registerProject(request);
     }
 
+//    @PostMapping("/{employeeId}/projects")
+//    public ProjectResponseModel registerProjectWithEmployee(@PathVariable(value = "employeeId") String employeeId,@RequestBody ProjectRequestModel projects){
+//        return projectService.registerProjectWithEmployee(employeeId,projects);
+//    }
+
     @GetMapping("/getTestApi")
     public String getTestApi(){
         return projectService.consumeApi();

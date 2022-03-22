@@ -4,6 +4,7 @@ import com.onlyjavatech.samir.model.DepartmentModel.Department;
 import com.onlyjavatech.samir.model.ProjectModel.Project;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -22,13 +23,20 @@ public class Employee {
     @JoinColumn(name = "department_id", referencedColumnName = "id")
     private Department department;
 
-    @ManyToMany
-    private List<Project> projects;
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
+    private List<Project> projects = new ArrayList<>();
 
-    public void addProjects(Project project){
+    public void addProject(Project project){
         projects.add(project);
         project.getEmployees().add(this);
+    }
 
+    public void removeProject(Project project){
+        projects.remove(project);
+        project.getEmployees().remove(this);
 
     }
 

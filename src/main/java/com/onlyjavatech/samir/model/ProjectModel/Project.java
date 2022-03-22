@@ -3,23 +3,19 @@ package com.onlyjavatech.samir.model.ProjectModel;
 import com.onlyjavatech.samir.model.Employee;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name="projects")
+@Table(name = "projects")
 public class Project {
     @Id
     private String id;
-    @Column(name="project_name")
+    @Column(name = "project_name")
     private String projectName;
 
     @ManyToMany(mappedBy = "projects")
-    private List<Employee> employees;
-
-    public void addEmployee(Employee employee){
-        employees.add(employee);
-
-    }
+    private List<Employee> employees = new ArrayList<>();
 
     public String getId() {
         return id;

@@ -3,7 +3,10 @@ package com.onlyjavatech.samir.controller;
 import com.onlyjavatech.samir.model.Employee;
 import com.onlyjavatech.samir.model.EmployeeRequestModel;
 import com.onlyjavatech.samir.model.EmployeeResponseModel;
+import com.onlyjavatech.samir.model.ProjectModel.ProjectRequestModel;
+import com.onlyjavatech.samir.model.ProjectModel.ProjectResponseModel;
 import com.onlyjavatech.samir.service.EmployeeService;
+import com.onlyjavatech.samir.service.ProjectService.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,10 +18,18 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
+    @Autowired
+    private ProjectService projectService;
+
     @PostMapping
     public EmployeeResponseModel registerEmployee(@RequestBody EmployeeRequestModel employee) {
         return employeeService.registerEmployee(employee);
     }
+
+//    @PostMapping("/{employeeId}/projects")
+//    public EmployeeResponseModel registerEmployeeProject(@RequestBody ProjectRequestModel employeeProject){
+//        return  projectService.registerEmployeeProject(employeeProject);
+//    }
 
 //    @GetMapping("/getEmployee")
 //    public List<Employee> getEmployee(){
