@@ -80,6 +80,16 @@ public class ProjectService {
         return "home";
     }
 
+    public Boolean  checkProjectByProjectId(String id){
+       return projectRepository.existsById(id);
+    }
+
+    public Project getProjectByProjectId(String id){
+        return projectRepository.findById(id).get();
+    }
+
+
+
     private ProjectResponseModel setProjectResponseModel(Project request)
     {
         ProjectResponseModel response = new ProjectResponseModel();

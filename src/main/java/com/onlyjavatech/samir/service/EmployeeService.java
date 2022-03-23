@@ -6,9 +6,11 @@ import com.onlyjavatech.samir.model.Employee;
 import com.onlyjavatech.samir.model.EmployeeRequestModel;
 import com.onlyjavatech.samir.model.EmployeeResponseModel;
 import com.onlyjavatech.samir.model.ProjectModel.Project;
+import com.onlyjavatech.samir.model.ProjectModel.ProjectResponseModel;
 import com.onlyjavatech.samir.repository.EmployeeRepository;
 import com.onlyjavatech.samir.service.DepartmentService.DepartmentService;
 import com.onlyjavatech.samir.service.ProjectService.ProjectService;
+import org.apache.tomcat.websocket.PojoClassHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,11 +60,33 @@ public class EmployeeService {
 
     public EmployeeResponseModel updateEmployee(EmployeeRequestModel request) {
         String id = request.getId();
-        Employee emp = employeeRepository.findById(id).get();
-        emp.setFirstname(request.getFirstname());
-        emp.setLastname(request.getLastname());
-        emp.setEmailId(request.getEmailId());
-        Employee updatedEmployee = employeeRepository.save(emp);
+        Employee employee = employeeRepository.findById(id).get();
+        employee.setFirstname(request.getFirstname());
+        employee.setLastname(request.getLastname());
+        employee.setEmailId(request.getEmailId());
+
+        request.getProjects().forEach(project -> {
+            System.out.println("-------------        +       ----------------------");
+            System.out.println("==== "+project.getProjectName()+"=====");
+            if(!projectService.checkProjectByProjectId(project.getId())){
+                Project newProject = new Project();
+                String projectId = UUID.randomUUID().toString();
+                System.out.println("--- id ---"+projectId);
+                newProject.setId(projectId);
+                newProject.setProjectName(project.getProjectName());
+                employee.addProject(newProject);
+            }
+            else {System.out.println("-- test---");
+
+//                Project newProjectElse = new Project();
+//                newProjectElse.setId(project.getId());
+//                newProjectElse.setProjectName(project.getProjectName());
+                Project newProjectElse = projectService.getProjectByProjectId(project.getId());
+                employee.addProject(newProjectElse);
+            }
+        });
+
+        Employee updatedEmployee = employeeRepository.save(employee);
         return setEmployeeResponseModel(updatedEmployee);
 
     }
