@@ -16,7 +16,6 @@ import java.util.List;
 public class ProjectController {
     @Autowired
     private ProjectService projectService;
-
     @PostMapping
     public ProjectResponseModel registerProject(@RequestBody ProjectRequestModel request)
     {
@@ -27,12 +26,11 @@ public class ProjectController {
 //    public ProjectResponseModel registerProjectWithEmployee(@PathVariable(value = "employeeId") String employeeId,@RequestBody ProjectRequestModel projects){
 //        return projectService.registerProjectWithEmployee(employeeId,projects);
 //    }
-
+@ResponseBody
     @GetMapping("/getTestApi")
     public String getTestApi(){
         return projectService.consumeApi();
     }
-
     @GetMapping("/testingException")
     public String testingException(){
         return projectService.testingException();
@@ -42,16 +40,16 @@ public class ProjectController {
         return projectService.getProjects();
     }
 
-    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler({NullPointerException.class,NumberFormatException.class,ArrayIndexOutOfBoundsException.class})
-    public String exceptionHandlerNull(){
-        return "nullPage";
-    }
-
-    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(value = Exception.class)
-    public String exceptionHandlerGeneric(){
-        return "nullPage";
-    }
+//    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+//    @ExceptionHandler({NullPointerException.class,NumberFormatException.class,ArrayIndexOutOfBoundsException.class})
+//    public String exceptionHandlerNull(){
+//        return "nullPage";
+//    }
+//
+//    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+//    @ExceptionHandler(value = Exception.class)
+//    public String exceptionHandlerGeneric(){
+//        return "nullPage";
+//    }
 
 }
