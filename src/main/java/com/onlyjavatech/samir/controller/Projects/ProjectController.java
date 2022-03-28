@@ -19,17 +19,6 @@ public class ProjectController {
         return projectService.registerProject(request);
     }
 
-    @ResponseBody
-    @GetMapping("/getTestApi")
-    public String getTestApi() {
-        return projectService.consumeApi();
-    }
-
-    @GetMapping("/testingException")
-    public String testingException() {
-        return projectService.testingException();
-    }
-
     @GetMapping
     public List<ProjectResponseModel> getProjects() {
         return projectService.getProjects();

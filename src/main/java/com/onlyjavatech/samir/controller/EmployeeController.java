@@ -43,11 +43,4 @@ public class EmployeeController {
         employeeService.deleteEmployee(id);
     }
 
-//    ----  Normal DeleteMapping  -----
-//    @DeleteMapping("/deleteEmployee")
-//    public EmployeeResponseModel deleteEmployee(@RequestBody EmployeeRequestModel employee)
-//    {
-//        return employeeService.deleteEmployee(employee);
-//    }
-
 }

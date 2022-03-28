@@ -47,18 +47,6 @@ public class ProjectService {
         return null;
     }
 
-    public String consumeApi() {
-
-        return null;
-    }
-
-
-    public String testingException() {
-        String str = null;
-        System.out.println(str.length());
-        return "home";
-    }
-
     public Boolean checkProjectByProjectId(String id) {
         return projectRepository.existsById(id);
     }
@@ -66,7 +54,6 @@ public class ProjectService {
     public Project getProjectByProjectId(String id) {
         return projectRepository.findById(id).get();
     }
-
 
     private ProjectResponseModel setProjectResponseModel(Project request) {
         ProjectResponseModel response = new ProjectResponseModel();

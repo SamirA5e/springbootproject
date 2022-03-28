@@ -19,18 +19,15 @@ public class TestingService {
     @Autowired
     private TestingRepository testingRepository;
 
-
     public TestingResponseModel registerTester(TestingRequestModel test) {
         Testing testing = new Testing();
         testing.setFirstName(test.getFirstName());
         testing.setMiddleName(test.getMiddleName());
         testing.setLastName(test.getLastName());
         testing.setEmailId(test.getEmailId());
-
         UUID uuid = UUID.randomUUID();
         String uuidAsString = uuid.toString();
         testing.setId(uuidAsString);
-
         Testing newTester = testingRepository.save(testing);
 
         return setTesterResponseModel(newTester);
@@ -39,26 +36,21 @@ public class TestingService {
     public List<TestingResponseModel> getTesters() {
         Iterable<Testing> testers = testingRepository.findAll();
         List<TestingResponseModel> testersList = new ArrayList<>();
-
-        for (Testing tester : testers) {
+        testers.forEach((tester -> {
             TestingResponseModel tester_row = setTesterResponseModel(tester);
             testersList.add(tester_row);
-        }
+        }));
 
         return testersList;
-
     }
 
     public List<TestingResponseModel> getTestersLog() {
         Iterable<Testing> testers = testingRepository.findAll();
         List<TestingResponseModel> testersList = new ArrayList<>();
-
         for (Testing tester : testers) {
             TestingResponseModel tester_row = setTesterResponseModel(tester);
             testersList.add(tester_row);
         }
-
-
         //    -------------------------------------- stream ----------------------------------------
         List<Integer> integersList = Arrays.asList(1, 2, 3, 4, 5);
         Integer sum = integersList.stream().reduce(0, Integer::sum);
@@ -69,7 +61,6 @@ public class TestingService {
         int multiplication = integersList.stream().reduce(2, (ans, i) -> ans * i);
         float division = integersList.stream().reduce(1, (ans, i) -> ans / i);
 
-
         List<String> names = Arrays.asList("samir1", "", "arbaz", "tejas", "nikhil");
 
         LOGGER.info("----------------- Info message by samir --------------");
@@ -79,7 +70,6 @@ public class TestingService {
         LOGGER.info("" + sumAll);
         LOGGER.info("-- multiplication --");
         LOGGER.info("" + multiplication);
-
         LOGGER.info("-- devision --");
         LOGGER.info("" + division);
         LOGGER.info("-- maxValue --");
@@ -96,28 +86,33 @@ public class TestingService {
         LOGGER.info("" + integersList.stream().limit(2).collect(Collectors.toList()));
         LOGGER.info("----- sort integer list ------");
         LOGGER.info("" + integersList.stream().sorted().collect(Collectors.toList()));
-
         LOGGER.info("------- Names -----------");
         names.stream().filter(x -> !x.isEmpty()).forEach(System.out::println);
-
         LOGGER.info("" + names.stream().sorted().collect(Collectors.toList()));
         LOGGER.info("------- Names starts with -----------");
         LOGGER.info("" + names.stream().filter(i -> i.startsWith("a")).collect(Collectors.toList()));
         LOGGER.info("---- String Names Sorting -----");
         LOGGER.info("" + names.stream().sorted().collect(Collectors.toList()));
-
         LOGGER.info("-- list.sort---");
         Collections.sort(integersList);
         LOGGER.info("" + integersList);
-
-
         LOGGER.debug("----------------- debug message by samir --------------");
         LOGGER.warn("----------------- warn message by samir --------------");
         LOGGER.error("----------------- Error message by samir --------------");
         LOGGER.trace("----------------- Trace message by samir --------------");
         //    ---------------------------------------- end stream --------------------------------------
-
         return testersList;
+    }
+
+    public String consumeApi() {
+
+        return null;
+    }
+
+    public String testingException() {
+        String str = null;
+        System.out.println(str.length());
+        return "home";
     }
 
     private TestingResponseModel setTesterResponseModel(Testing request) {

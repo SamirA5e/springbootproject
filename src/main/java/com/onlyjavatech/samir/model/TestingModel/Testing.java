@@ -18,8 +18,7 @@ public class Testing {
     private String lastName;
     @Column(name = "emailId")
     private String emailId;
-
-    //    ---------- You can use FetchType --------
+//    ---------- You can use FetchType --------
 //    @JoinColumn(name = "departments_id")
 //    @OneToOne(fetch = FetchType.LAZY)
     @ManyToOne(cascade = CascadeType.ALL)
@@ -33,7 +32,6 @@ public class Testing {
     public void setDepartment(Department department) {
         this.department = department;
     }
-
 
     public String getId() {
         return id;
