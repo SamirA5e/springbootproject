@@ -1,8 +1,5 @@
 package com.onlyjavatech.samir.service.TestingService;
 
-import com.onlyjavatech.samir.model.DepartmentModel.Department;
-import com.onlyjavatech.samir.model.DepartmentModel.DepartmentRequestModel;
-import com.onlyjavatech.samir.model.DepartmentModel.DepartmentResponseModel;
 import com.onlyjavatech.samir.model.TestingModel.Testing;
 import com.onlyjavatech.samir.model.TestingModel.TestingRequestModel;
 import com.onlyjavatech.samir.model.TestingModel.TestingResponseModel;
@@ -13,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,8 +20,7 @@ public class TestingService {
     private TestingRepository testingRepository;
 
 
-
-    public TestingResponseModel registerTester(TestingRequestModel test){
+    public TestingResponseModel registerTester(TestingRequestModel test) {
         Testing testing = new Testing();
         testing.setFirstName(test.getFirstName());
         testing.setMiddleName(test.getMiddleName());
@@ -42,12 +36,11 @@ public class TestingService {
         return setTesterResponseModel(newTester);
     }
 
-    public List<TestingResponseModel> getTesters()
-    {
-        Iterable<Testing> testers =testingRepository.findAll();
+    public List<TestingResponseModel> getTesters() {
+        Iterable<Testing> testers = testingRepository.findAll();
         List<TestingResponseModel> testersList = new ArrayList<>();
 
-        for (Testing tester:testers){
+        for (Testing tester : testers) {
             TestingResponseModel tester_row = setTesterResponseModel(tester);
             testersList.add(tester_row);
         }
@@ -55,12 +48,12 @@ public class TestingService {
         return testersList;
 
     }
-    public List<TestingResponseModel> getTestersLog()
-    {
-        Iterable<Testing> testers =testingRepository.findAll();
+
+    public List<TestingResponseModel> getTestersLog() {
+        Iterable<Testing> testers = testingRepository.findAll();
         List<TestingResponseModel> testersList = new ArrayList<>();
 
-        for (Testing tester:testers){
+        for (Testing tester : testers) {
             TestingResponseModel tester_row = setTesterResponseModel(tester);
             testersList.add(tester_row);
         }
@@ -124,14 +117,11 @@ public class TestingService {
         LOGGER.trace("----------------- Trace message by samir --------------");
         //    ---------------------------------------- end stream --------------------------------------
 
-
-
-
         return testersList;
-
     }
-    private TestingResponseModel setTesterResponseModel(Testing request){
-        TestingResponseModel response =new TestingResponseModel();
+
+    private TestingResponseModel setTesterResponseModel(Testing request) {
+        TestingResponseModel response = new TestingResponseModel();
         response.setId(request.getId());
         response.setFirstName(request.getFirstName());
         response.setMiddleName(request.getMiddleName());

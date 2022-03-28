@@ -23,18 +23,15 @@ public class Employee {
     @JoinColumn(name = "department_id", referencedColumnName = "id")
     private Department department;
 
-    @ManyToMany(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-    })
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Project> projects = new ArrayList<>();
 
-    public void addProject(Project project){
+    public void addProject(Project project) {
         projects.add(project);
         project.getEmployees().add(this);
     }
 
-    public void removeProject(Project project){
+    public void removeProject(Project project) {
         projects.remove(project);
         project.getEmployees().remove(this);
 
