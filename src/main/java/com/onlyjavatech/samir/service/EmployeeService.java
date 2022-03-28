@@ -49,7 +49,6 @@ public class EmployeeService {
             String projectId = UUID.randomUUID().toString();
             newProject.setId(projectId);
             newProject.setProjectName(project.getProjectName());
-//            projectService.registerProject(project);
             employee.addProject(newProject);
 
         });
@@ -65,55 +64,34 @@ public class EmployeeService {
         employee.setEmailId(request.getEmailId());
 
         request.getProjects().forEach(project -> {
-            System.out.println("-------------        +       ----------------------");
-            System.out.println("==== " + project.getProjectName() + "=====");
             if (!projectService.checkProjectByProjectId(project.getId())) {
                 Project newProject = new Project();
                 String projectId = UUID.randomUUID().toString();
-                System.out.println("--- id ---" + projectId);
                 newProject.setId(projectId);
                 newProject.setProjectName(project.getProjectName());
                 employee.addProject(newProject);
             } else {
-                System.out.println("-- test---");
                 Project newProjectElse = projectService.getProjectByProjectId(project.getId());
                 employee.addProject(newProjectElse);
             }
         });
 
         request.getRemoveProjects().forEach(project -> {
-            System.out.println("-------------        +       ----------------------");
-            System.out.println("==== " + project.getProjectName() + "=====");
             if (!projectService.checkProjectByProjectId(project.getId())) {
-                System.out.println("--- remove ----");
                 throw new EntityNotFoundException();
             } else {
-                System.out.println("-- test---");
                 Project newProjectElse = projectService.getProjectByProjectId(project.getId());
                 employee.removeProject(newProjectElse);
             }
         });
 
-
         Employee updatedEmployee = employeeRepository.save(employee);
-        System.out.println("----- first name----"+updatedEmployee.getFirstname());
         return setEmployeeResponseModel(updatedEmployee);
-
     }
 
-    //    public List<Employee> getEmployee() {
-//        return (List<Employee>) employeeRepository.findAll();
-//    }
     public List<EmployeeResponseModel> getEmployee() {
         Iterable<Employee> employees = employeeRepository.findAll();
         List<EmployeeResponseModel> employeeList = new ArrayList<>();
-
-//        for (Employee employee : employees) {
-////            EmployeeResponseModel employee =new EmployeeResponseModel();
-//            EmployeeResponseModel employee_row = setEmployeeResponseModel(employee);
-//
-//            employeeList.add(employee_row);
-//        }
         employees.forEach(employee -> {
             EmployeeResponseModel employee_row = setEmployeeResponseModel(employee);
             DepartmentResponseModel departmentResponse = new DepartmentResponseModel();
@@ -132,21 +110,12 @@ public class EmployeeService {
     }
 
     public void deleteEmployee(String id) {
-//        Employee emp = employeeRepository.findById(id).get();
         Project project = new Project();
         project.setId(id);
         Employee employee = new Employee();
         employee.removeProject(project);
         employeeRepository.deleteById(id);
     }
-
-//    public EmployeeResponseModel deleteEmployee(EmployeeRequestModel request){
-//        Integer id =request.getId();
-//
-//        EmployeeResponseModel employeeResponseModel = new EmployeeResponseModel();
-//        employeeRepository.deleteById(id);
-//        return  employeeResponseModel;
-//    }
 
     private EmployeeResponseModel setEmployeeResponseModel(Employee employee) {
         EmployeeResponseModel response = new EmployeeResponseModel();
