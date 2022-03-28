@@ -4,6 +4,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
+
 //@RestController
 //@Controller
 @RestControllerAdvice
@@ -23,5 +25,12 @@ public class MyExceptionHandler{
     public String exceptionHandlerGeneric(){
         System.out.println("---  null exception page  ---");
         return "nullPageException";
+    }
+
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(value = EntityNotFoundException.class)
+    public String exceptionEntityNotFound(){
+        System.out.println("---  null exception page  ---");
+        return "Id is not present....";
     }
 }

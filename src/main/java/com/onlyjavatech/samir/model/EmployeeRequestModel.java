@@ -12,6 +12,7 @@ public class EmployeeRequestModel {
     private String emailId;
     private String departmentId;
     private List<ProjectRequestModel> projects = new ArrayList<>();
+    private List<ProjectRequestModel> removeProjects = new ArrayList<>();
 
     public String getId() {
         return id;
@@ -59,5 +60,13 @@ public class EmployeeRequestModel {
 
     public void setProjects(List<ProjectRequestModel> projects) {
         this.projects = projects;
+    }
+
+    public List<ProjectRequestModel> getRemoveProjects() {
+        return removeProjects;
+    }
+
+    public void setRemoveProjects(List<ProjectRequestModel> removeProjects) {
+        this.removeProjects = removeProjects;
     }
 }

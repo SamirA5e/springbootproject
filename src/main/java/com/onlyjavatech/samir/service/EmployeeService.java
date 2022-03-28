@@ -6,15 +6,14 @@ import com.onlyjavatech.samir.model.Employee;
 import com.onlyjavatech.samir.model.EmployeeRequestModel;
 import com.onlyjavatech.samir.model.EmployeeResponseModel;
 import com.onlyjavatech.samir.model.ProjectModel.Project;
-import com.onlyjavatech.samir.model.ProjectModel.ProjectResponseModel;
 import com.onlyjavatech.samir.repository.EmployeeRepository;
 import com.onlyjavatech.samir.service.DepartmentService.DepartmentService;
 import com.onlyjavatech.samir.service.ProjectService.ProjectService;
-import org.apache.tomcat.websocket.PojoClassHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -67,26 +66,37 @@ public class EmployeeService {
 
         request.getProjects().forEach(project -> {
             System.out.println("-------------        +       ----------------------");
-            System.out.println("==== "+project.getProjectName()+"=====");
-            if(!projectService.checkProjectByProjectId(project.getId())){
+            System.out.println("==== " + project.getProjectName() + "=====");
+            if (!projectService.checkProjectByProjectId(project.getId())) {
                 Project newProject = new Project();
                 String projectId = UUID.randomUUID().toString();
-                System.out.println("--- id ---"+projectId);
+                System.out.println("--- id ---" + projectId);
                 newProject.setId(projectId);
                 newProject.setProjectName(project.getProjectName());
                 employee.addProject(newProject);
-            }
-            else {System.out.println("-- test---");
-
-//                Project newProjectElse = new Project();
-//                newProjectElse.setId(project.getId());
-//                newProjectElse.setProjectName(project.getProjectName());
+            } else {
+                System.out.println("-- test---");
                 Project newProjectElse = projectService.getProjectByProjectId(project.getId());
                 employee.addProject(newProjectElse);
             }
         });
 
+        request.getRemoveProjects().forEach(project -> {
+            System.out.println("-------------        +       ----------------------");
+            System.out.println("==== " + project.getProjectName() + "=====");
+            if (!projectService.checkProjectByProjectId(project.getId())) {
+                System.out.println("--- remove ----");
+                throw new EntityNotFoundException();
+            } else {
+                System.out.println("-- test---");
+                Project newProjectElse = projectService.getProjectByProjectId(project.getId());
+                employee.removeProject(newProjectElse);
+            }
+        });
+
+
         Employee updatedEmployee = employeeRepository.save(employee);
+        System.out.println("----- first name----"+updatedEmployee.getFirstname());
         return setEmployeeResponseModel(updatedEmployee);
 
     }
@@ -125,7 +135,7 @@ public class EmployeeService {
 //        Employee emp = employeeRepository.findById(id).get();
         Project project = new Project();
         project.setId(id);
-        Employee employee= new Employee();
+        Employee employee = new Employee();
         employee.removeProject(project);
         employeeRepository.deleteById(id);
     }

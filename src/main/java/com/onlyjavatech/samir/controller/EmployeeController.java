@@ -1,10 +1,7 @@
 package com.onlyjavatech.samir.controller;
 
-import com.onlyjavatech.samir.model.Employee;
 import com.onlyjavatech.samir.model.EmployeeRequestModel;
 import com.onlyjavatech.samir.model.EmployeeResponseModel;
-import com.onlyjavatech.samir.model.ProjectModel.ProjectRequestModel;
-import com.onlyjavatech.samir.model.ProjectModel.ProjectResponseModel;
 import com.onlyjavatech.samir.service.EmployeeService;
 import com.onlyjavatech.samir.service.ProjectService.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,28 +23,14 @@ public class EmployeeController {
         return employeeService.registerEmployee(employee);
     }
 
-//    @PostMapping("/{employeeId}/projects")
-//    public EmployeeResponseModel registerEmployeeProject(@RequestBody ProjectRequestModel employeeProject){
-//        return  projectService.registerEmployeeProject(employeeProject);
-//    }
-
-//    @GetMapping("/getEmployee")
-//    public List<Employee> getEmployee(){
-//        return  employeeService.getEmployee();
-//    }
-
-    //    @PutMapping("/updateEmployee")
-//    public Employee updateEmployee(@RequestBody Employee employee){
-//        return employeeService.updateEmployee(employee);
-//    }
     @GetMapping
     public List<EmployeeResponseModel> getEmployees() {
         return employeeService.getEmployee();
     }
+
     @GetMapping("/{employee-id}")
-    public EmployeeResponseModel getEmployeeById(@PathVariable(value = "employee-id") String id)
-    {
-        return  employeeService.getEmployeeById(id);
+    public EmployeeResponseModel getEmployeeById(@PathVariable(value = "employee-id") String id) {
+        return employeeService.getEmployeeById(id);
     }
 
     @PutMapping()
