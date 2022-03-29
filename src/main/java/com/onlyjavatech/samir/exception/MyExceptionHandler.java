@@ -32,4 +32,13 @@ public class MyExceptionHandler {
     public String exceptionEntityNotFound() {
         return "Id is not present....";
     }
+
+    @ExceptionHandler(value = ObjectNotFoundException.class)
+    public ErrorResponse employeeNotFoundException(ObjectNotFoundException exception) {
+        ErrorResponse errorResponse = new ErrorResponse();
+//        errorResponse.setStatusCode(HttpStatus.NOT_FOUND);
+        errorResponse.setStatusCode(exception.getStatus());
+        errorResponse.setMessage(exception.getMessage());
+        return errorResponse;
+    }
 }

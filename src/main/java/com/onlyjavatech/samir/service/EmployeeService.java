@@ -1,5 +1,6 @@
 package com.onlyjavatech.samir.service;
 
+import com.onlyjavatech.samir.exception.ObjectNotFoundException;
 import com.onlyjavatech.samir.model.DepartmentModel.Department;
 import com.onlyjavatech.samir.model.DepartmentModel.DepartmentResponseModel;
 import com.onlyjavatech.samir.model.Employee;
@@ -10,12 +11,14 @@ import com.onlyjavatech.samir.repository.EmployeeRepository;
 import com.onlyjavatech.samir.service.DepartmentService.DepartmentService;
 import com.onlyjavatech.samir.service.ProjectService.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -58,7 +61,12 @@ public class EmployeeService {
 
     public EmployeeResponseModel updateEmployee(EmployeeRequestModel request) {
         String id = request.getId();
-        Employee employee = employeeRepository.findById(id).get();
+        Optional<Employee> optionalEmployee = employeeRepository.findById(id);
+//        Employee employee = null;
+        if(!optionalEmployee.isPresent()){
+            throw new ObjectNotFoundException("employee not found...",HttpStatus.NOT_FOUND);
+        }
+        Employee employee = optionalEmployee.get();
         employee.setFirstname(request.getFirstname());
         employee.setLastname(request.getLastname());
         employee.setEmailId(request.getEmailId());
