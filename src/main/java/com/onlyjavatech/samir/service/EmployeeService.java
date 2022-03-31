@@ -1,6 +1,7 @@
 package com.onlyjavatech.samir.service;
 
 import com.onlyjavatech.samir.exception.ObjectNotFoundException;
+import com.onlyjavatech.samir.exception.ValidationHandler;
 import com.onlyjavatech.samir.model.DepartmentModel.Department;
 import com.onlyjavatech.samir.model.DepartmentModel.DepartmentResponseModel;
 import com.onlyjavatech.samir.model.Employee;
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+//@Validated
 @Service
 public class EmployeeService {
     @Autowired
@@ -34,6 +36,25 @@ public class EmployeeService {
 
     @Transactional
     public EmployeeResponseModel registerEmployee(EmployeeRequestModel request) {
+        if (request == null) {
+            throw new ObjectNotFoundException("Object not found", HttpStatus.BAD_REQUEST);
+        }
+        if (request.getFirstname() == null || request.getFirstname().isEmpty()) {
+            throw new ValidationHandler("Please Provide Valid First Name", HttpStatus.BAD_REQUEST);
+        }
+        if (request.getLastname() == null || request.getLastname().isEmpty()) {
+            throw new ValidationHandler("Please Provide Valid Last Name", HttpStatus.BAD_REQUEST);
+        }
+        if (request.getEmailId() == null || request.getEmailId().isEmpty()) {
+            throw new ValidationHandler("Please Provide Valid EmailId", HttpStatus.BAD_REQUEST);
+        }
+        if (request.getDepartmentId() == null || request.getDepartmentId().isEmpty()) {
+            throw new ValidationHandler("Please Provide Valid DepartmentId", HttpStatus.BAD_REQUEST);
+        }
+        if (request.getProjects().isEmpty()) {
+            throw new ValidationHandler("Please Provide ProjectList", HttpStatus.BAD_REQUEST);
+        }
+
         Employee employee = new Employee();
         employee.setFirstname(request.getFirstname());
         employee.setLastname(request.getLastname());
@@ -41,13 +62,17 @@ public class EmployeeService {
 
         UUID uuid = UUID.randomUUID();
         String uuidAsString = uuid.toString();
-
-        System.out.println("Your UUID is: " + uuidAsString);
         employee.setId(uuidAsString);
 
         Department department = departmentService.getDepartmentByDepartmentId(request.getDepartmentId());
         employee.setDepartment(department);
         request.getProjects().forEach(project -> {
+            if (project==null) {
+                throw new ValidationHandler("Please Provide Valid ProjectList objects", HttpStatus.BAD_REQUEST);
+            }
+            if (project.getId() == null || project.getProjectName().isEmpty()) {
+                throw new ValidationHandler("Please Provide Valid ProjectList Name", HttpStatus.BAD_REQUEST);
+            }
             Project newProject = new Project();
             String projectId = UUID.randomUUID().toString();
             newProject.setId(projectId);
@@ -62,9 +87,8 @@ public class EmployeeService {
     public EmployeeResponseModel updateEmployee(EmployeeRequestModel request) {
         String id = request.getId();
         Optional<Employee> optionalEmployee = employeeRepository.findById(id);
-//        Employee employee = null;
-        if(!optionalEmployee.isPresent()){
-            throw new ObjectNotFoundException("employee not found...",HttpStatus.NOT_FOUND);
+        if (!optionalEmployee.isPresent()) {
+            throw new ObjectNotFoundException("employee not found...", HttpStatus.NOT_FOUND);
         }
         Employee employee = optionalEmployee.get();
         employee.setFirstname(request.getFirstname());
@@ -112,9 +136,18 @@ public class EmployeeService {
     }
 
     public EmployeeResponseModel getEmployeeById(String id) {
-        Employee employee = employeeRepository.findById(id).get();
-
-        return setEmployeeResponseModel(employee);
+        Optional<Employee> optionalEmployee = employeeRepository.findById(id);
+        if (!optionalEmployee.isPresent()) {
+            throw new EntityNotFoundException();
+        }
+        Employee employee = optionalEmployee.get();
+        System.out.println(employee.getDepartment().getDepartment_name() + "---");
+        EmployeeResponseModel employeeResponseModel = setEmployeeResponseModel(employee);
+        employeeResponseModel.setDepartment(departmentService.getDepartmentById(employee.getDepartment().getId()));
+        return employeeResponseModel;
+//        Department department = departmentService.getDepartmentByDepartmentId(employee.getDepartment().getId());
+//        employee.setDepartment(department);
+//        return  setEmployeeResponseModel(employee);
     }
 
     public void deleteEmployee(String id) {

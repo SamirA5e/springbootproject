@@ -5,10 +5,13 @@ import com.onlyjavatech.samir.model.EmployeeResponseModel;
 import com.onlyjavatech.samir.service.EmployeeService;
 import com.onlyjavatech.samir.service.ProjectService.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
-
+//@Validated
 @RestController
 @RequestMapping("/employees")
 public class EmployeeController {
@@ -19,7 +22,7 @@ public class EmployeeController {
     private ProjectService projectService;
 
     @PostMapping
-    public EmployeeResponseModel registerEmployee(@RequestBody EmployeeRequestModel employee) {
+    public EmployeeResponseModel registerEmployee(@Valid @RequestBody EmployeeRequestModel employee) {
         return employeeService.registerEmployee(employee);
     }
 
@@ -29,7 +32,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/{employee-id}")
-    public EmployeeResponseModel getEmployeeById(@PathVariable(value = "employee-id") String id) {
+    public EmployeeResponseModel getEmployeeById(@PathVariable(value = "employee-id") @NonNull String id) {
         return employeeService.getEmployeeById(id);
     }
 

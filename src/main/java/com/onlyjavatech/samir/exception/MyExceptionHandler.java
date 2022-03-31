@@ -1,6 +1,7 @@
 package com.onlyjavatech.samir.exception;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -34,11 +35,27 @@ public class MyExceptionHandler {
     }
 
     @ExceptionHandler(value = ObjectNotFoundException.class)
-    public ErrorResponse employeeNotFoundException(ObjectNotFoundException exception) {
+    public ErrorResponse objectNotFoundException(ObjectNotFoundException exception) {
         ErrorResponse errorResponse = new ErrorResponse();
-//        errorResponse.setStatusCode(HttpStatus.NOT_FOUND);
         errorResponse.setStatusCode(exception.getStatus());
         errorResponse.setMessage(exception.getMessage());
         return errorResponse;
     }
+
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    public ErrorResponse methodArgumentNotValidException(MethodArgumentNotValidException exception) {
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setStatusCode(HttpStatus.BAD_REQUEST);
+        errorResponse.setMessage(exception.getMessage());
+        return errorResponse;
+    }
+
+    @ExceptionHandler(value = ValidationHandler.class)
+    public ErrorResponse validationHandler(ValidationHandler exception){
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setStatusCode(HttpStatus.BAD_REQUEST);
+        errorResponse.setMessage(exception.getMessage());
+        return errorResponse;
+    }
+
 }
