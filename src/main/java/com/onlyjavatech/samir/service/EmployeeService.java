@@ -49,9 +49,10 @@ public class EmployeeService {
         if (request.getEmailId() == null || request.getEmailId().isEmpty()) {
             throw new ValidationHandler("Please Provide Valid EmailId", HttpStatus.BAD_REQUEST);
         }
-        String regex = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\\\.[A-Z]{2,6}$";
+        String regex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
         Pattern pattern = Pattern.compile(regex);
-        if (pattern.matcher(request.getEmailId()).matches()) {
+        if (!pattern.matcher(request.getEmailId()).matches()) {
+            System.out.println("---- email validation -----");
             throw new ValidationHandler("Please Provide Valid EmailId like abc@gmail.com", HttpStatus.BAD_REQUEST);
         }
 
