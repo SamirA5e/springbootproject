@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 //@Validated
 @Service
@@ -48,6 +49,12 @@ public class EmployeeService {
         if (request.getEmailId() == null || request.getEmailId().isEmpty()) {
             throw new ValidationHandler("Please Provide Valid EmailId", HttpStatus.BAD_REQUEST);
         }
+        String regex = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\\\.[A-Z]{2,6}$";
+        Pattern pattern = Pattern.compile(regex);
+        if (pattern.matcher(request.getEmailId()).matches()) {
+            throw new ValidationHandler("Please Provide Valid EmailId like abc@gmail.com", HttpStatus.BAD_REQUEST);
+        }
+
         if (request.getDepartmentId() == null || request.getDepartmentId().isEmpty()) {
             throw new ValidationHandler("Please Provide Valid DepartmentId", HttpStatus.BAD_REQUEST);
         }
@@ -67,10 +74,10 @@ public class EmployeeService {
         Department department = departmentService.getDepartmentByDepartmentId(request.getDepartmentId());
         employee.setDepartment(department);
         request.getProjects().forEach(project -> {
-            if (project==null) {
+            if (project == null) {
                 throw new ValidationHandler("Please Provide Valid ProjectList objects", HttpStatus.BAD_REQUEST);
             }
-            if (project.getId() == null || project.getProjectName().isEmpty()) {
+            if (project.getProjectName() == null || project.getProjectName().isEmpty()) {
                 throw new ValidationHandler("Please Provide Valid ProjectList Name", HttpStatus.BAD_REQUEST);
             }
             Project newProject = new Project();
