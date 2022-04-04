@@ -2,6 +2,7 @@ package com.onlyjavatech.samir.service.ProjectService;
 
 import com.onlyjavatech.samir.exception.ObjectNotFoundException;
 import com.onlyjavatech.samir.exception.ValidationHandler;
+import com.onlyjavatech.samir.model.Employee;
 import com.onlyjavatech.samir.model.ProjectModel.Project;
 import com.onlyjavatech.samir.model.ProjectModel.ProjectRequestModel;
 import com.onlyjavatech.samir.model.ProjectModel.ProjectResponseModel;
@@ -89,6 +90,17 @@ public class ProjectService {
         Project project = optionalProject.get();
         project.setProjectName(request.getProjectName());
         return setProjectResponseModel(projectRepository.save(project));
+    }
+
+    public void removeProject(String id){
+        if(id == null || id.isEmpty()){
+            throw new ValidationHandler("Project Id can't be null or empty",HttpStatus.BAD_REQUEST);
+        }
+        Optional<Project> optionalProject = projectRepository.findById(id);
+        if(!optionalProject.isPresent()){
+            throw new ValidationHandler("project is not present in database ,please provide valid project id",HttpStatus.BAD_REQUEST);
+        }
+        projectRepository.deleteById(id);
     }
 
     private ProjectResponseModel setProjectResponseModel(Project request) {
