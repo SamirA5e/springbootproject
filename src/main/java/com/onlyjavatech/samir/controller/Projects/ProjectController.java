@@ -24,6 +24,15 @@ public class ProjectController {
         return projectService.getProjects();
     }
 
+    @GetMapping("/{project-id}")
+    public ProjectResponseModel getDepartmentById(@PathVariable(value = "project-id") String id){
+        return projectService.getProjectById(id);
+    }
+
+    @PutMapping()
+    public ProjectResponseModel updateProject(@RequestBody ProjectRequestModel request){
+        return  projectService.updateProject(request);
+    }
 //    ---------------    Without using @ControllerAdvice  ----------------
 //    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
 //    @ExceptionHandler({NullPointerException.class,NumberFormatException.class,ArrayIndexOutOfBoundsException.class})
