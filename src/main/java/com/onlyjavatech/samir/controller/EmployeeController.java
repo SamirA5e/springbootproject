@@ -4,14 +4,17 @@ import com.onlyjavatech.samir.model.EmployeeRequestModel;
 import com.onlyjavatech.samir.model.EmployeeResponseModel;
 import com.onlyjavatech.samir.service.EmployeeService;
 import com.onlyjavatech.samir.service.ProjectService.ProjectService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-//@Validated
+
 @RestController
 @RequestMapping("/employees")
 public class EmployeeController {
@@ -26,11 +29,15 @@ public class EmployeeController {
         return employeeService.registerEmployee(employee);
     }
 
+    @Operation(summary = "This api will fetch all employees", description = "this is description for api")
+    @ApiResponse(responseCode = "200", description = "Fetch all the employees from database")
     @GetMapping
     public List<EmployeeResponseModel> getEmployees() {
         return employeeService.getEmployee();
     }
 
+    @Operation(summary = "This api provide employee by employee id", description = "This is description")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "This api will fetch employee from database whose employee id matches with id in database", content = @Content(mediaType = "application/json"))})
     @GetMapping("/{employee-id}")
     public EmployeeResponseModel getEmployeeById(@PathVariable(value = "employee-id") @NonNull String id) {
         return employeeService.getEmployeeById(id);

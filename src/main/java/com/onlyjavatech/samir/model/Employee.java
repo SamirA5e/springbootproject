@@ -2,6 +2,7 @@ package com.onlyjavatech.samir.model;
 
 import com.onlyjavatech.samir.model.DepartmentModel.Department;
 import com.onlyjavatech.samir.model.ProjectModel.Project;
+import io.swagger.v3.oas.annotations.Operation;
 
 import javax.persistence.*;
 import java.util.ArrayList;
