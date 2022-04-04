@@ -27,4 +27,12 @@ public class TestingController {
     {
         return testingService.getTestersLog();
     }
+
+    @GetMapping("/getTestApi")
+    public String getTestApi(){return testingService.consumeApi();}
+
+    @GetMapping("/testingException")
+    public String testingException() {
+        return testingService.testingException();
+    }
 }

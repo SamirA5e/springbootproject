@@ -4,9 +4,15 @@ import com.onlyjavatech.samir.model.EmployeeRequestModel;
 import com.onlyjavatech.samir.model.EmployeeResponseModel;
 import com.onlyjavatech.samir.service.EmployeeService;
 import com.onlyjavatech.samir.service.ProjectService.ProjectService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -19,17 +25,21 @@ public class EmployeeController {
     private ProjectService projectService;
 
     @PostMapping
-    public EmployeeResponseModel registerEmployee(@RequestBody EmployeeRequestModel employee) {
+    public EmployeeResponseModel registerEmployee(@Valid @RequestBody EmployeeRequestModel employee) {
         return employeeService.registerEmployee(employee);
     }
 
+    @Operation(summary = "This api will fetch all employees", description = "this is description for api")
+    @ApiResponse(responseCode = "200", description = "Fetch all the employees from database")
     @GetMapping
     public List<EmployeeResponseModel> getEmployees() {
         return employeeService.getEmployee();
     }
 
+    @Operation(summary = "This api provide employee by employee id", description = "This is description")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "This api will fetch employee from database whose employee id matches with id in database", content = @Content(mediaType = "application/json"))})
     @GetMapping("/{employee-id}")
-    public EmployeeResponseModel getEmployeeById(@PathVariable(value = "employee-id") String id) {
+    public EmployeeResponseModel getEmployeeById(@PathVariable(value = "employee-id") @NonNull String id) {
         return employeeService.getEmployeeById(id);
     }
 
@@ -42,11 +52,5 @@ public class EmployeeController {
     public void deleteEmployee(@PathVariable(value = "employee-id") String id) {
         employeeService.deleteEmployee(id);
     }
-
-//    @DeleteMapping("/deleteEmployee")
-//    public EmployeeResponseModel deleteEmployee(@RequestBody EmployeeRequestModel employee)
-//    {
-//        return employeeService.deleteEmployee(employee);
-//    }
 
 }

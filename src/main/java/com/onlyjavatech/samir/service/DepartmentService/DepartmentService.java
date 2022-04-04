@@ -21,21 +21,17 @@ public class DepartmentService {
         department.setDepartment_name(request.getDepartment_name());
         UUID uuid = UUID.randomUUID();
         String uuidAsString = uuid.toString();
-
-        System.out.println("Your UUID is: " + uuidAsString);
         department.setId(uuidAsString);
         Department newDepartment = departmentRepository.save(department);
-
         return setDepartResponseModel(newDepartment);
     }
 
     public List<DepartmentResponseModel> getDepartments() {
         Iterable<Department> departments = departmentRepository.findAll();
         List<DepartmentResponseModel> responseList = new ArrayList<>();
-
+//        ---------  for loop for departments object ---------
 //        for (Department department : departments) {
 //            DepartmentResponseModel department_row = setDepartResponseModel(department);
-//
 //            responseList.add(department_row);
 //        }
         departments.forEach(department -> {
@@ -64,12 +60,10 @@ public class DepartmentService {
     }
 
     public void deleteDepartment(String id) {
-        System.out.println("--------------");
-        System.out.println(id);
         departmentRepository.deleteById(id);
     }
 
-    public Department getDepartmentByDepartmentId(String id){
+    public Department getDepartmentByDepartmentId(String id) {
         Department department = departmentRepository.findById(id).get();
         return department;
     }
