@@ -12,6 +12,7 @@ import com.onlyjavatech.samir.repository.EmployeeRepository;
 import com.onlyjavatech.samir.service.DepartmentService.DepartmentService;
 import com.onlyjavatech.samir.service.ProjectService.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +26,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 //@Validated
+//@Lazy
 @Service
 public class EmployeeService {
     @Autowired
@@ -33,6 +35,7 @@ public class EmployeeService {
     @Autowired
     private DepartmentService departmentService;
 
+//    @Lazy
     @Autowired
     private ProjectService projectService;
 
@@ -93,6 +96,13 @@ public class EmployeeService {
         return setEmployeeResponseModel(newEmployee);
     }
 
+    public void removeProjectFromProjectsList(Project project){
+        Employee employee = new Employee();
+//        employee.getProjects().remove(project);
+        employee.removeProject(project);
+        employeeRepository.save(employee);
+
+    }
     public EmployeeResponseModel updateEmployee(EmployeeRequestModel request) {
         if (request == null) {
             throw new ObjectNotFoundException("Object can't be null...", HttpStatus.NOT_FOUND);
@@ -112,7 +122,6 @@ public class EmployeeService {
         if (request.getProjects() == null || request.getProjects().isEmpty()) {
             throw new ValidationHandler("Projects list can't be null or empty", HttpStatus.BAD_REQUEST);
         }
-//
         String regex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(request.getEmailId());

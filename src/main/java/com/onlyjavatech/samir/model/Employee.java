@@ -2,7 +2,6 @@ package com.onlyjavatech.samir.model;
 
 import com.onlyjavatech.samir.model.DepartmentModel.Department;
 import com.onlyjavatech.samir.model.ProjectModel.Project;
-import io.swagger.v3.oas.annotations.Operation;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -35,7 +34,6 @@ public class Employee {
     public void removeProject(Project project) {
         projects.remove(project);
         project.getEmployees().remove(this);
-
     }
 
     public String getId() {

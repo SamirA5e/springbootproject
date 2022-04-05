@@ -32,24 +32,24 @@ public class ProjectController {
         return projectService.getProjects();
     }
 
-    @Operation(summary = "This Api fetch particular project",description = "This api fetch particular project based on provided project id")
-    @ApiResponse(responseCode = "200",description = "Project Fetch Successfully")
+    @Operation(summary = "This Api fetch particular project", description = "This api fetch particular project based on provided project id")
+    @ApiResponse(responseCode = "200", description = "Project Fetch Successfully")
     @GetMapping("/{project-id}")
     public ProjectResponseModel getDepartmentById(@PathVariable(value = "project-id") String id) {
         return projectService.getProjectById(id);
     }
 
-    @Operation(summary = "This Api update projects",description = "This Api update projects to the projects table based on the provided project id in request")
-    @ApiResponse(responseCode = "200",description = "Project updated successfully")
+    @Operation(summary = "This Api update projects", description = "This Api update projects to the projects table based on the provided project id in request")
+    @ApiResponse(responseCode = "200", description = "Project updated successfully")
     @PutMapping()
     public ProjectResponseModel updateProject(@RequestBody ProjectRequestModel request) {
         return projectService.updateProject(request);
     }
 
     @Operation(summary = "This api remove particular project from projects table")
-    @ApiResponse(responseCode = "200",description = "Project removed successfully")
+    @ApiResponse(responseCode = "200", description = "Project removed successfully")
     @DeleteMapping("/{project-id}")
-    public void removeProject(@PathVariable("project-id") String id){
+    public void removeProject(@PathVariable(value = "project-id") String id) {
         projectService.removeProject(id);
     }
 //    ---------------    Without using @ControllerAdvice  ----------------
