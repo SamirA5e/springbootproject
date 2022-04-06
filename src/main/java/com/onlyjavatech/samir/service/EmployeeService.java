@@ -56,7 +56,6 @@ public class EmployeeService {
         String regex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
         Pattern pattern = Pattern.compile(regex);
         if (!pattern.matcher(request.getEmailId()).matches()) {
-            System.out.println("---- email validation -----");
             throw new ValidationHandler("Please Provide Valid EmailId like abc@gmail.com", HttpStatus.BAD_REQUEST);
         }
 
