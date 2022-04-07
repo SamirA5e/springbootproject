@@ -4,7 +4,9 @@ import com.onlyjavatech.samir.model.Employee;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public interface EmployeeRepository extends CrudRepository<Employee,String> {
+import java.util.List;
 
+@Repository
+public interface EmployeeRepository extends CrudRepository<Employee, String> {
+    List<Employee> findByProjects_Id(String id);
 }

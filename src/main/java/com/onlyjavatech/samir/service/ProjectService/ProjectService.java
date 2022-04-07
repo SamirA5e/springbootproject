@@ -2,7 +2,6 @@ package com.onlyjavatech.samir.service.ProjectService;
 
 import com.onlyjavatech.samir.exception.ObjectNotFoundException;
 import com.onlyjavatech.samir.exception.ValidationHandler;
-import com.onlyjavatech.samir.model.Employee;
 import com.onlyjavatech.samir.model.ProjectModel.Project;
 import com.onlyjavatech.samir.model.ProjectModel.ProjectRequestModel;
 import com.onlyjavatech.samir.model.ProjectModel.ProjectResponseModel;
@@ -23,9 +22,9 @@ public class ProjectService {
     @Autowired
     private ProjectRepository projectRepository;
 
-//    @Lazy
-//    @Autowired
-//    private EmployeeService employeeService;
+    @Lazy
+    @Autowired
+    private EmployeeService employeeService;
 
     public ProjectResponseModel registerProject(ProjectRequestModel request) {
         if (request == null) {
@@ -103,20 +102,7 @@ public class ProjectService {
         if (!optionalProject.isPresent()) {
             throw new ValidationHandler("project is not present in database ,please provide valid project id", HttpStatus.BAD_REQUEST);
         }
-
-        Employee employee = new Employee();
-
-//        employee.getProjects().forEach(project -> {
-//            employee.removeProject(project);
-//        });
-
-//        employee.getProjects().remove(optionalProject.get());
-
-
-//        employee.removeProject(optionalProject.get());
-//        employeeRepository.save(employee);
-
-//        employeeService.removeProjectFromProjectsList(optionalProject.get());
+        employeeService.removeProjectsRelation(optionalProject.get());
 
         projectRepository.deleteById(id);
     }
