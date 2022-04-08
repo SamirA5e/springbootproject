@@ -21,9 +21,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-//@Validated
 @Service
 public class EmployeeService {
     @Autowired
@@ -52,7 +52,6 @@ public class EmployeeService {
         String regex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
         Pattern pattern = Pattern.compile(regex);
         if (!pattern.matcher(request.getEmailId()).matches()) {
-            System.out.println("---- email validation -----");
             throw new ValidationHandler("Please Provide Valid EmailId like abc@gmail.com", HttpStatus.BAD_REQUEST);
         }
 
@@ -92,7 +91,40 @@ public class EmployeeService {
         return setEmployeeResponseModel(newEmployee);
     }
 
+    public void removeProjectFromProjectsList(Project project) {
+        Employee employee = new Employee();
+//        employee.getProjects().remove(project);
+        employee.removeProject(project);
+        employeeRepository.save(employee);
+
+    }
+
     public EmployeeResponseModel updateEmployee(EmployeeRequestModel request) {
+        if (request == null) {
+            throw new ObjectNotFoundException("Object can't be null...", HttpStatus.NOT_FOUND);
+        }
+        if (request.getId() == null || request.getId().isEmpty()) {
+            throw new ValidationHandler("Employee Id can't be null or empty...", HttpStatus.BAD_REQUEST);
+        }
+        if (request.getFirstname() == null || request.getFirstname().isEmpty()) {
+            throw new ValidationHandler("Employee First name can't be null or empty...", HttpStatus.BAD_REQUEST);
+        }
+        if (request.getLastname() == null || request.getLastname().isEmpty()) {
+            throw new ValidationHandler("Employee Last name can't be null or empty...", HttpStatus.BAD_REQUEST);
+        }
+        if (request.getEmailId() == null || request.getEmailId().isEmpty()) {
+            throw new ValidationHandler("Employee Email Id can't be null or empty...", HttpStatus.BAD_REQUEST);
+        }
+        if (request.getProjects() == null || request.getProjects().isEmpty()) {
+            throw new ValidationHandler("Projects list can't be null or empty", HttpStatus.BAD_REQUEST);
+        }
+        String regex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(request.getEmailId());
+        if (!matcher.matches()) {
+            throw new ValidationHandler("Please provide valid email like abc@gmail.com", HttpStatus.BAD_REQUEST);
+        }
+
         String id = request.getId();
         Optional<Employee> optionalEmployee = employeeRepository.findById(id);
         if (!optionalEmployee.isPresent()) {
@@ -104,6 +136,15 @@ public class EmployeeService {
         employee.setEmailId(request.getEmailId());
 
         request.getProjects().forEach(project -> {
+            if (project == null) {
+                throw new ObjectNotFoundException("Project can't be null or empty", HttpStatus.BAD_REQUEST);
+            }
+            if (project.getId() == null || project.getId().isEmpty()) {
+                throw new ValidationHandler("Project Id can't be Empty or null", HttpStatus.BAD_REQUEST);
+            }
+            if (project.getProjectName() == null || project.getProjectName().isEmpty()) {
+                throw new ValidationHandler("Project Name can't be null or empty", HttpStatus.BAD_REQUEST);
+            }
             if (!projectService.checkProjectByProjectId(project.getId())) {
                 Project newProject = new Project();
                 String projectId = UUID.randomUUID().toString();
@@ -144,6 +185,9 @@ public class EmployeeService {
     }
 
     public EmployeeResponseModel getEmployeeById(String id) {
+        if (id == null || id.isEmpty() || id.trim().isEmpty()) {
+            throw new ValidationHandler("Employee is can't be null or empty", HttpStatus.BAD_REQUEST);
+        }
         Optional<Employee> optionalEmployee = employeeRepository.findById(id);
         if (!optionalEmployee.isPresent()) {
             throw new EntityNotFoundException();
@@ -153,17 +197,27 @@ public class EmployeeService {
         EmployeeResponseModel employeeResponseModel = setEmployeeResponseModel(employee);
         employeeResponseModel.setDepartment(departmentService.getDepartmentById(employee.getDepartment().getId()));
         return employeeResponseModel;
-//        Department department = departmentService.getDepartmentByDepartmentId(employee.getDepartment().getId());
-//        employee.setDepartment(department);
-//        return  setEmployeeResponseModel(employee);
     }
 
     public void deleteEmployee(String id) {
-        Project project = new Project();
-        project.setId(id);
-        Employee employee = new Employee();
-        employee.removeProject(project);
+        if (id == null || id.isEmpty() || id.trim().isEmpty()) {
+            throw new ValidationHandler("Employee is can't be null or empty", HttpStatus.BAD_REQUEST);
+        }
+        Optional<Employee> optionalEmployee = employeeRepository.findById(id);
+        if (!optionalEmployee.isPresent()) {
+            throw new ValidationHandler("Employee not found ,please provide valid Employee Id..", HttpStatus.BAD_REQUEST);
+        }
         employeeRepository.deleteById(id);
+    }
+
+    public void removeProjectsRelation(Project project) {
+//        Employee employee = new Employee();
+        List<Employee> employeeList = employeeRepository.findByProjects_Id(project.getId());
+        employeeList.forEach(employee -> {
+            employee.removeProject(project);
+            employeeRepository.save(employee);
+        });
+
     }
 
     private EmployeeResponseModel setEmployeeResponseModel(Employee employee) {
