@@ -155,7 +155,36 @@ public class EmployeeService {
             employee.removeProject(project);
             employeeRepository.save(employee);
         });
+    }
 
+    public List<EmployeeResponseModel> getAllEmployeesByQuery(){
+        List<Employee> employeeList = employeeRepository.getAllEmployeesByQuery();
+        List<EmployeeResponseModel> employeeResponseModelList = new ArrayList<>();
+        employeeList.forEach(employee -> {
+            employeeResponseModelList.add(setEmployeeResponseModel(employee));
+        });
+        return  employeeResponseModelList;
+    }
+
+    public List<EmployeeResponseModel> getAllEmployeesByNativeQuery(){
+        List<Employee> employeeList = employeeRepository.getAllEmployeesByNativeQuery();
+        List<EmployeeResponseModel> employeeResponseModelList = new ArrayList<>();
+        employeeList.forEach(employee -> {
+            employeeResponseModelList.add(setEmployeeResponseModel(employee));
+        });
+        return  employeeResponseModelList;
+    }
+
+    public EmployeeResponseModel getAllEmployeesByQueryId(String id){
+        Employee employee = employeeRepository.getAllEmployeesByQueryId(id);
+
+        return  setEmployeeResponseModel(employee);
+    }
+
+    public EmployeeResponseModel getAllEmployeesByNativeQueryById(String id){
+        Employee employee = employeeRepository.getAllEmployeesByNativeQueryId(id);
+
+        return  setEmployeeResponseModel(employee);
     }
 
     private EmployeeResponseModel setEmployeeResponseModel(Employee employee) {

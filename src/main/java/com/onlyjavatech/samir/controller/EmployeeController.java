@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 
@@ -63,6 +64,25 @@ public class EmployeeController {
     @DeleteMapping("/{employee-id}")
     public void deleteEmployee(@PathVariable(value = "employee-id") String id) {
         employeeService.deleteEmployee(id);
+    }
+
+    @GetMapping("/query")
+    public List<EmployeeResponseModel> getAllEmployeesByQuery(){
+        return employeeService.getAllEmployeesByQuery();
+    }
+
+    @GetMapping("/query/{employee_id}")
+    public EmployeeResponseModel getAllEmployeesByQuery(@PathVariable(value = "employee_id") String id){
+        return employeeService.getAllEmployeesByQueryId(id);
+    }
+    @GetMapping("/native_query")
+    public List<EmployeeResponseModel> getAllEmployeesByNativeQuery(){
+        return employeeService.getAllEmployeesByNativeQuery();
+    }
+
+    @GetMapping("/native_query/{employee_id}")
+    public EmployeeResponseModel getAllEmployeesByNativeQueryById(@PathVariable(value = "employee_id") String id){
+        return employeeService.getAllEmployeesByNativeQueryById(id);
     }
 
 }
