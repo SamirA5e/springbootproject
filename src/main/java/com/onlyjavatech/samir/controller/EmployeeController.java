@@ -4,6 +4,7 @@ import com.onlyjavatech.samir.model.EmployeeRequestModel;
 import com.onlyjavatech.samir.model.EmployeeResponseModel;
 import com.onlyjavatech.samir.service.EmployeeService;
 import com.onlyjavatech.samir.service.ProjectService.ProjectService;
+import com.onlyjavatech.samir.service.project_employee_service.ProjectEmployeeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -25,6 +26,9 @@ public class EmployeeController {
 
     @Autowired
     private ProjectService projectService;
+
+    @Autowired
+    private ProjectEmployeeService projectEmployeeService;
 
     @Operation(summary = "This api will Store employee in database",description = "This api accept Json request and store this request to database")
     @ApiResponse(responseCode = "200",description = "Employee Stored in database")
@@ -51,7 +55,7 @@ public class EmployeeController {
     @ApiResponse(responseCode = "200",description = "Employee data updated in database")
     @PutMapping()
     public EmployeeResponseModel updateEmployee(@RequestBody EmployeeRequestModel employee) {
-        return employeeService.updateEmployee(employee);
+        return projectEmployeeService.updateEmployee(employee);
     }
 
     @Operation(summary = "This Api Remove Employee from database",description = "This api accepts employee id and remove that employee from database")
