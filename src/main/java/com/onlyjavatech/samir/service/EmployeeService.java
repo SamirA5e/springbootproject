@@ -11,6 +11,9 @@ import com.onlyjavatech.samir.model.ProjectModel.Project;
 import com.onlyjavatech.samir.repository.EmployeeRepository;
 import com.onlyjavatech.samir.service.DepartmentService.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -157,34 +160,48 @@ public class EmployeeService {
         });
     }
 
-    public List<EmployeeResponseModel> getAllEmployeesByQuery(){
+    public List<EmployeeResponseModel> getAllEmployeesByQuery() {
         List<Employee> employeeList = employeeRepository.getAllEmployeesByQuery();
         List<EmployeeResponseModel> employeeResponseModelList = new ArrayList<>();
         employeeList.forEach(employee -> {
             employeeResponseModelList.add(setEmployeeResponseModel(employee));
         });
-        return  employeeResponseModelList;
+        return employeeResponseModelList;
     }
 
-    public List<EmployeeResponseModel> getAllEmployeesByNativeQuery(){
+    public List<EmployeeResponseModel> getAllEmployeesByNativeQuery() {
         List<Employee> employeeList = employeeRepository.getAllEmployeesByNativeQuery();
         List<EmployeeResponseModel> employeeResponseModelList = new ArrayList<>();
         employeeList.forEach(employee -> {
             employeeResponseModelList.add(setEmployeeResponseModel(employee));
         });
-        return  employeeResponseModelList;
+        return employeeResponseModelList;
     }
 
-    public EmployeeResponseModel getAllEmployeesByQueryId(String id){
+    public EmployeeResponseModel getAllEmployeesByQueryId(String id) {
         Employee employee = employeeRepository.getAllEmployeesByQueryId(id);
 
-        return  setEmployeeResponseModel(employee);
+        return setEmployeeResponseModel(employee);
     }
 
-    public EmployeeResponseModel getAllEmployeesByNativeQueryById(String id){
+    public EmployeeResponseModel getAllEmployeesByNativeQueryById(String id) {
         Employee employee = employeeRepository.getAllEmployeesByNativeQueryId(id);
 
-        return  setEmployeeResponseModel(employee);
+        return setEmployeeResponseModel(employee);
+    }
+
+    public Page<Employee> getAllEmployeesByPaginationById(int page, String id) {
+        Pageable pageable = PageRequest.of(page, 1);
+        return employeeRepository.getAllEmployeesByPaginationById(id, pageable);
+    }
+
+    public List<EmployeeResponseModel> getAllEmployeesByPagination(int page) {
+        Pageable pageable = PageRequest.of(page, 1);
+        List<EmployeeResponseModel> employeeResponseModelList = new ArrayList<>();
+        employeeRepository.getAllEmployeesByPagination(pageable).forEach(employee -> {
+            employeeResponseModelList.add(setEmployeeResponseModel(employee));
+        });
+        return employeeResponseModelList;
     }
 
     private EmployeeResponseModel setEmployeeResponseModel(Employee employee) {
@@ -193,7 +210,9 @@ public class EmployeeService {
         response.setFirstname(employee.getFirstname());
         response.setLastname(employee.getLastname());
         response.setEmailId(employee.getEmailId());
-
+        response.setDepartment(departmentService.setDepartResponseModel(employee.getDepartment()));
         return response;
     }
+
+
 }

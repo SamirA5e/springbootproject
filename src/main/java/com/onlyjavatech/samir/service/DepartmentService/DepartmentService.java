@@ -110,7 +110,7 @@ public class DepartmentService {
         return optionalDepartment.get();
     }
 
-    private DepartmentResponseModel setDepartResponseModel(Department department) {
+    public DepartmentResponseModel setDepartResponseModel(Department department) {
         DepartmentResponseModel response = new DepartmentResponseModel();
         response.setId(department.getId());
         response.setDepartment_name(department.getDepartment_name());
