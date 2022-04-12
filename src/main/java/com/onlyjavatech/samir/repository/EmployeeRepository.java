@@ -31,11 +31,18 @@ public interface EmployeeRepository extends CrudRepository<Employee, String> {
 //            countQuery = "SELECT count(*) FROM Employee",
 //            nativeQuery = true)
 //    Page<Employee> findAllUsersWithPagination(Pageable pageable);
-
+    
     @Query(value = "select * from employees where id=:id",nativeQuery = true)
     Page<Employee> getAllEmployeesByPaginationById(@Param(value = "id") String id,Pageable pageable);
 
 //    @Query(value = "select * from employees",countQuery = "SELECT count(*) FROM employees",nativeQuery = true)
     @Query(value = "select * from employees order by id",nativeQuery = true)
     Page<Employee> getAllEmployeesByPagination(Pageable pageable);
+
+    @Query(value = "select employee from Employee employee where department.id=:id")
+    List<Employee> getEmployeeByDepartmentId(@Param(value = "id") String id);
+
+
+    @Query(value = "select * from employees where id=(select employees_id from employees_projects where projects_id=:id GROUP BY employees_id)",nativeQuery = true)
+    Page<Employee> getEmployeesByProjectIdByPagination(String id,Pageable pageable);
 }

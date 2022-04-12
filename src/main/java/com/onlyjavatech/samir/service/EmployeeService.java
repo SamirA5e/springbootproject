@@ -91,7 +91,6 @@ public class EmployeeService {
 
     public void removeProjectFromProjectsList(Project project) {
         Employee employee = new Employee();
-//        employee.getProjects().remove(project);
         employee.removeProject(project);
         employeeRepository.save(employee);
 
@@ -132,10 +131,9 @@ public class EmployeeService {
         }
         Optional<Employee> optionalEmployee = employeeRepository.findById(id);
         if (!optionalEmployee.isPresent()) {
-            throw new EntityNotFoundException();
+            throw new EntityNotFoundException("Employee not found..");
         }
         Employee employee = optionalEmployee.get();
-        System.out.println(employee.getDepartment().getDepartment_name() + "---");
         EmployeeResponseModel employeeResponseModel = setEmployeeResponseModel(employee);
         employeeResponseModel.setDepartment(departmentService.getDepartmentById(employee.getDepartment().getId()));
         return employeeResponseModel;
@@ -158,6 +156,40 @@ public class EmployeeService {
             employee.removeProject(project);
             employeeRepository.save(employee);
         });
+    }
+
+    public List<EmployeeResponseModel> getEmployeeByDepartmentId(String id) {
+        List<EmployeeResponseModel> employeeResponseModelList = new ArrayList<>();
+        employeeRepository.getEmployeeByDepartmentId(id).forEach(employee -> {
+            employeeResponseModelList.add(setEmployeeResponseModel(employee));
+        });
+        return employeeResponseModelList;
+    }
+
+    public List<EmployeeResponseModel> getEmployeesByProjectId(String id){
+        List<EmployeeResponseModel> employeeResponseModelList = new ArrayList<>();
+        employeeRepository.findByProjects_Id(id).forEach(employee -> {
+            employeeResponseModelList.add(setEmployeeResponseModel(employee));
+        });
+        return employeeResponseModelList;
+    }
+
+    public List<EmployeeResponseModel> getEmployeesByProjectIdByPagination(String id,int pageNo,int pageSize){
+        Pageable pageable = PageRequest.of(pageNo,pageSize);
+        List<EmployeeResponseModel> employeeResponseModelList = new ArrayList<>();
+        employeeRepository.getEmployeesByProjectIdByPagination(id,pageable).forEach(employee -> {
+            employeeResponseModelList.add(setEmployeeResponseModel(employee));
+        });
+        return  employeeResponseModelList;
+    }
+
+    public List<EmployeeResponseModel> getAllEmployeesByQueryByPageNoAndPageSize(int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        List<EmployeeResponseModel> employeeResponseModelList = new ArrayList<>();
+        employeeRepository.getAllEmployeesByPagination(pageable).forEach(employee -> {
+            employeeResponseModelList.add(setEmployeeResponseModel(employee));
+        });
+        return employeeResponseModelList;
     }
 
     public List<EmployeeResponseModel> getAllEmployeesByQuery() {
