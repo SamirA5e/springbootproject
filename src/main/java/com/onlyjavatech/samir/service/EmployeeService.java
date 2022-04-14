@@ -8,6 +8,7 @@ import com.onlyjavatech.samir.model.Employee;
 import com.onlyjavatech.samir.model.EmployeeRequestModel;
 import com.onlyjavatech.samir.model.EmployeeResponseModel;
 import com.onlyjavatech.samir.model.ProjectModel.Project;
+import com.onlyjavatech.samir.model.search_model.SearchRequestModel;
 import com.onlyjavatech.samir.repository.EmployeeRepository;
 import com.onlyjavatech.samir.service.DepartmentService.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -166,7 +167,7 @@ public class EmployeeService {
         return employeeResponseModelList;
     }
 
-    public List<EmployeeResponseModel> getEmployeesByProjectId(String id){
+    public List<EmployeeResponseModel> getEmployeesByProjectId(String id) {
         List<EmployeeResponseModel> employeeResponseModelList = new ArrayList<>();
         employeeRepository.findByProjects_Id(id).forEach(employee -> {
             employeeResponseModelList.add(setEmployeeResponseModel(employee));
@@ -174,21 +175,55 @@ public class EmployeeService {
         return employeeResponseModelList;
     }
 
-    public List<EmployeeResponseModel> getEmployeesByProjectIdByPagination(String id,int pageNo,int pageSize){
-        Pageable pageable = PageRequest.of(pageNo,pageSize);
+    public List<EmployeeResponseModel> getEmployeesByProjectIdByPagination(String id, Integer pageNo, Integer pageSize) {
         List<EmployeeResponseModel> employeeResponseModelList = new ArrayList<>();
-        employeeRepository.getEmployeesByProjectIdByPagination(id,pageable).forEach(employee -> {
-            employeeResponseModelList.add(setEmployeeResponseModel(employee));
-        });
-        return  employeeResponseModelList;
+        if (pageNo == null || pageSize == null) {
+            employeeRepository.getEmployeesByProjectId(id).forEach(employee -> {
+                employeeResponseModelList.add(setEmployeeResponseModel(employee));
+            });
+        } else {
+            Pageable pageable = PageRequest.of(pageNo, pageSize);
+            employeeRepository.getEmployeesByProjectIdByPagination(id, pageable).forEach(employee -> {
+                employeeResponseModelList.add(setEmployeeResponseModel(employee));
+            });
+        }
+
+        return employeeResponseModelList;
     }
 
-    public List<EmployeeResponseModel> getAllEmployeesByQueryByPageNoAndPageSize(int pageNo, int pageSize) {
-        Pageable pageable = PageRequest.of(pageNo, pageSize);
+    public List<EmployeeResponseModel> getEmployeesBySearch(SearchRequestModel request, Integer pageNo, Integer pageSize) {
+
         List<EmployeeResponseModel> employeeResponseModelList = new ArrayList<>();
-        employeeRepository.getAllEmployeesByPagination(pageable).forEach(employee -> {
-            employeeResponseModelList.add(setEmployeeResponseModel(employee));
-        });
+
+        if (pageNo == null || pageSize == null) {
+            employeeRepository.findByEmailIdOrFirstnameOrLastnameOrDepartment_DepartmentNameOrderByFirstnameAsc(request.getEmailId(), request.getFirstName(), request.getLastName(), request.getDepartmentName()).forEach(employee -> {
+                employeeResponseModelList.add(setEmployeeResponseModel(employee));
+            });
+        } else {
+
+            Pageable pageable = PageRequest.of(pageNo, pageSize);
+            employeeRepository.findByEmailIdOrFirstnameOrLastnameOrDepartment_DepartmentNameOrderByFirstnameAsc(request.getEmailId(), request.getFirstName(), request.getLastName(), request.getDepartmentName(), pageable).forEach(employee -> {
+                employeeResponseModelList.add(setEmployeeResponseModel(employee));
+            });
+        }
+
+        return employeeResponseModelList;
+    }
+
+    public List<EmployeeResponseModel> getAllEmployeesByQueryByPageNoAndPageSize(Integer pageNo, Integer pageSize) {
+        List<EmployeeResponseModel> employeeResponseModelList = new ArrayList<>();
+        if (pageNo == null || pageSize == null) {
+            employeeRepository.findAll().forEach(employee -> {
+                employeeResponseModelList.add(setEmployeeResponseModel(employee));
+            });
+        } else {
+            Pageable pageable = PageRequest.of(pageNo, pageSize);
+
+            employeeRepository.getAllEmployeesByPagination(pageable).forEach(employee -> {
+                employeeResponseModelList.add(setEmployeeResponseModel(employee));
+            });
+        }
+
         return employeeResponseModelList;
     }
 

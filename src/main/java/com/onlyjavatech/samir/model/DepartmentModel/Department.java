@@ -11,7 +11,7 @@ public class Department {
     @Id
     private String id;
     @Column(name = "department_name")
-    private String department_name;
+    private String departmentName;
 
     @OneToMany(mappedBy = "department", cascade = CascadeType.ALL)
     private List<Employee> employees;
@@ -28,11 +28,11 @@ public class Department {
     }
 
     public String getDepartment_name() {
-        return department_name;
+        return departmentName;
     }
 
     public void setDepartment_name(String department_name) {
-        this.department_name = department_name;
+        this.departmentName = department_name;
     }
 
     public List<Employee> getEmployee() {

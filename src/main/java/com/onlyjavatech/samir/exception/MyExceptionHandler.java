@@ -1,6 +1,5 @@
 package com.onlyjavatech.samir.exception;
 
-import com.onlyjavatech.samir.service.TestingService.TestingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -22,14 +21,15 @@ public class MyExceptionHandler {
     @ExceptionHandler(value = NullPointerException.class)
 //  Declare ResponseBody if we use @ControllerAdvice
 //  @ResponseBody
-    public String exceptionHandlerNull() {
+    public String exceptionHandlerNull(NullPointerException exception) {
+        LOGGER.error("{} - {}", HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage(), exception);
         return "nullPage";
     }
 
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(value = Exception.class)
     public String exceptionHandlerGeneric(Exception exception) {
-        LOGGER.error("{} - {}",HttpStatus.BAD_REQUEST , exception.getMessage(), exception);
+        LOGGER.error("{} - {}", HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage(), exception);
         return "nullPageException";
     }
 
@@ -59,7 +59,7 @@ public class MyExceptionHandler {
     }
 
     @ExceptionHandler(value = ValidationHandler.class)
-    public ErrorResponse validationHandler(ValidationHandler exception){
+    public ErrorResponse validationHandler(ValidationHandler exception) {
         LOGGER.error("{} - {}", exception.getStatus(), exception.getMessage(), exception);
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setStatusCode(HttpStatus.BAD_REQUEST);

@@ -2,8 +2,6 @@ package com.onlyjavatech.samir.model;
 
 import com.onlyjavatech.samir.model.ProjectModel.ProjectRequestModel;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,8 +9,6 @@ public class EmployeeRequestModel {
     private String id;
     private String firstname;
     private String lastname;
-//    @NotNull(message = "Please provide email")
-//    @Email(message = "Invalid email")
     private String emailId;
     private String departmentId;
     private List<ProjectRequestModel> projects = new ArrayList<>();
